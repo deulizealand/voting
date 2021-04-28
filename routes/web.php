@@ -61,11 +61,12 @@ Route::group(['middleware' => 'web'], function () {
 });
 
 Auth::routes([
+    'register' => false,
     'reset' => false, // Password Reset Routes...
-    'verify' => false, // Email Verification Routes...'register' => false, // Registration Routes...
+    'verify' => true, // Email Verification Routes...'register' => false, // Registration Routes...
 ]);
 
-Route::group( ['middleware' => 'auth'], function() {
+Route::group( ['middleware' => ['auth','verified']], function() {
     //Route::group(['prefix' => 'admin'], function() {
         Route::group(['prefix' => 'dashboard'], function() {
             Route::get('/','DashboardController@index')->name('dashboard');
@@ -119,10 +120,3 @@ Route::group( ['middleware' => 'auth'], function() {
     //});
     
 });
-
-/*Route::group( ['middleware' => ['auth','verified']], function() {
-    Route::group(['prefix' => 'home'], function() {
-        Route::get('/','HomeController@index')->name('home');
-    });
-});*/
-
