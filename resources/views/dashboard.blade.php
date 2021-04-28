@@ -53,7 +53,7 @@
                 <div class="card-body py-4">
                     <div class="d-flex align-items-start">
                         <div class="flex-grow-1">
-                            <h3 class="mb-2">5.600</h3>
+                            <h3 class="mb-2">{{ $jmlBlumPilih->jml }}</h3>
                             <p class="mb-2">Belum Menyalurkan Pilihan</p>
                             <div class="mb-0">
                                 <span class="badge badge-soft-danger me-2"> <i class="mdi mdi-arrow-bottom-right"></i> -4.25% </span>
@@ -73,7 +73,7 @@
                 <div class="card-body py-4">
                     <div class="d-flex align-items-start">
                         <div class="flex-grow-1">
-                            <h3 class="mb-2">18.700</h3>
+                            <h3 class="mb-2">{{ $jmlPilih->jml }}</h3>
                             <p class="mb-2">Sudah Memilih</p>
                             <div class="mb-0">
                                 <span class="badge badge-soft-success me-2"> <i class="mdi mdi-arrow-bottom-right"></i> +8.65% </span>
@@ -104,10 +104,12 @@
                     <p class="card-text text-center">{{ $item->asal_dapen }}</p>
                 </div>
                 @if(auth()->user()->role_id == 3)
+                    @if($statusVoting)
                     @if($statusVoting->status == 1)
                         <div class="card-body text-center">
                             <a href="#" class="btn btn-primary">Pilih</a>
                         </div>
+                    @endif
                     @endif
                 @endif
             </div>

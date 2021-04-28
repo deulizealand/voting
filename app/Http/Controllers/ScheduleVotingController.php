@@ -65,7 +65,7 @@ class ScheduleVotingController extends Controller
                                 <i class="align-middle" data-feather="trash">Berhenti</i></a>';
                     }else{
                         return '<a href="#" data-token="{{csrf_token()}}" data-bs-toggle="tooltip" title="Selesai Voting">
-                                <i class="align-middle" data-feather="trash">Selesai</i></a>';
+                                <i class="align-middle" data-feather="trash">Lihat Hasil</i></a>';
                     }
 
                 })

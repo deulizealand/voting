@@ -3,11 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Imports\DapenImport;
+use App\Mail\Invitation;
 use App\Models\Member;
+use App\Models\ScheduleVoting;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\DataTables;
 use Excel;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class MemberController extends Controller
 {
@@ -66,10 +71,13 @@ class MemberController extends Controller
                 ->addColumn('action', function ($data) {
                     $uri_tamu = route('members.create',['sistem_id'=> 1]);
                     if($data->status == 0){
-                        return '<a href="#" onclick="postActive('.$data->id.');" data-id='.$data->id.' data-token="{{csrf_token()}}" data-bs-toggle="tooltip" title="Mulai Voting">
+                        return '<a href="#" onclick="kirimUndangan('.$data->id.');" data-id='.$data->id.' data-token="{{csrf_token()}}" data-bs-toggle="tooltip" title="Mulai Voting">
                                 <i class="align-middle" data-feather="trash">Kirim Undangan</i></a>';
+                    }elseif($data->status==1){
+                        return '<a href="#" data-id='.$data->id.' data-token="{{csrf_token()}}" data-bs-toggle="tooltip" title="Mulai Voting">
+                                <i class="align-middle" data-feather="trash">Undangan Terkirim</i></a>';
                     }else{
-                        return '<a href="#" onclick="postActive('.$data->id.');" data-id='.$data->id.' data-token="{{csrf_token()}}" data-bs-toggle="tooltip" title="Mulai Voting">
+                        return '<a href="#" data-id='.$data->id.' data-token="{{csrf_token()}}" data-bs-toggle="tooltip" title="Mulai Voting">
                                 <i class="align-middle" data-feather="trash">Undangan Terverifikasi</i></a>';
                     }
                 })
@@ -135,5 +143,49 @@ class MemberController extends Controller
                 'redirect_url' => route('members')
             ]);
         }
+    }
+
+    public function sendInvitation($id)
+    {
+        $datas = Member::find($id);
+        do {
+            //generate a random string using Laravel's str_random helper
+            $token = Str::random(8);
+        } //check if the token already exists and if it does, try again
+        while (User::where('remember_token', $token)->first());
+        
+        $strPassword = Str::random(8);
+
+        $user = User::where('email',$datas->email)->first();
+        if(!$user){
+            $invite = new User();
+            $invite->name = $datas->name;
+            $invite->email = $datas->email;
+            $invite->username = str_replace(' ','_',Str::substr(strtolower($datas->name),0,10));
+            $invite->role_id = 3;
+            $invite->member_id = $datas->id;
+            $invite->password = $strPassword;
+            $invite->remember_token = $token;
+            $invite->save();
+        }else{
+            $token = $user->remember_token;
+        }
+        
+        $acara = ScheduleVoting::where('status',0)->first();
+        //dd($acara);
+        $mailSubject = 'Undangan '. $acara->voting_name .' - '. $datas->name;
+        $uri_app = env('APP_URL');
+
+        $data = [
+            'url_invitation' => $uri_app.'/'.'invitation/'.$token,
+            'pass' => $strPassword,
+            'user' => auth()->user()->email,
+        ];
+
+        //Send Mail Invitation
+        Mail::to($datas->email)->send(new Invitation($data, $mailSubject));
+
+        $datas->status = 1;
+        $datas->save();
     }
 }

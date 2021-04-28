@@ -63,6 +63,18 @@
             order: [[0, 'asc']]
         });
 
+        function kirimUndangan(id)
+        {
+            $.ajax({
+                url :  uri + '/' + id + '/kirim-undangan',
+                type : 'post',
+                success : function(data) {
+                    table.draw();
+                    toastr.info('Undangan telah berhasil di kirim', 'info', {timeOut: 5000});
+                }
+            });
+        }
+
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

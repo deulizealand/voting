@@ -31,8 +31,8 @@ class Invitation extends Mailable
      */
     public function build()
     {
-        return $this->markdown('emails.invitataion')
+        return $this->markdown('emails.invitation')
                     ->subject($this->subject)
-                    ->with('data',$this->userInvite);
+                    ->with('data',$this->userInvitation);
     }
 }

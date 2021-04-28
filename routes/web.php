@@ -14,6 +14,9 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
+Route::get('invitation/{token}','InvitationController@acceptInvitation')->name('invite');
+
+
 Route::group(['middleware' => 'web'], function () {
     //Route::auth();
     Route::get(
@@ -92,6 +95,8 @@ Route::group( ['middleware' => 'auth'], function() {
             Route::match(['get', 'put'],'/{sistem_id}/create/{id}/update', 'MemberController@editMember')->name('members.update');
 
             Route::match(['get', 'post'],'/1/import','MemberController@dapenUpload')->name('members.upload');
+
+            Route::match(['get', 'post'],'/{id}/kirim-undangan','MemberController@sendInvitation')->name('members.send-invitation');
         });
 
         Route::group(['prefix' => 'schedule'], function() {

@@ -19,6 +19,8 @@ class DashboardController extends Controller
         $calons = Participant::with('posisi')->get();
         $statusVoting = ScheduleVoting::where('status',1)->get()->first();
         $jmlPemilih = Member::select(\DB::raw('count(id) as jml'))->first();
-        return view('dashboard',compact('calons','statusVoting','jmlPemilih'));
+        $jmlPilih = Member::select(\DB::raw('count(id) as jml'))->where('vote_status',1)->first();
+        $jmlBlumPilih = Member::select(\DB::raw('count(id) as jml'))->where('vote_status',0)->first();
+        return view('dashboard',compact('calons','statusVoting','jmlPemilih','jmlPilih','jmlBlumPilih'));
     }
 }
