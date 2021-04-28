@@ -17,7 +17,11 @@ class DashboardController extends Controller
 
     public function index(Request $request)
     {
-        $calons = Participant::with('posisi')->get();
+        $calons = Participant::select(\DB::raw('participants.id,participants.name,participants.asal_dapen,participants.img_name,positions.name as jabatan,
+                    ifnull((select count(id) as jml from votings where votings.participant_id=participants.id group by id),0) as total'))
+                    ->join('positions','positions.id','=','participants.position_id')
+                    ->get();
+
         $statusVoting = ScheduleVoting::where('status',1)->get()->first();
         $jmlPemilih = Member::select(\DB::raw('count(id) as jml'))->first();
         $jmlPilih = Member::select(\DB::raw('count(id) as jml'))->where('vote_status',1)->first();
