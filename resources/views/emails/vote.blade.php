@@ -1,7 +1,7 @@
 @component('mail::message')
-Helo, {{ $data['user'] }} ,
+Hello, {{ $data['name'] }} ,
 
-{{ $data['user'] }} terima kasih telah menggunakan hak suara anda.
+{{ $data['name'] }} terima kasih telah menggunakan hak suara anda.
 
 Ini adalah email otomatis, mohon jangan di balas.
 

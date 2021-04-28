@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\VotingMail;
 use App\Models\Member;
 use App\Models\Participant;
 use App\Models\ScheduleVoting;
 use App\Models\Voting;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Yajra\DataTables\DataTables;
 
 class DashboardController extends Controller
@@ -79,6 +81,16 @@ class DashboardController extends Controller
             $member = Member::find(auth()->user()->member_id);
             $member->vote_status = 1;
             $member->save();
+
+            $mailSubject ="Terima Kasih Telah Menggunakan Suara Anda";
+            
+            $data = [
+                'user' => auth()->user()->email,
+                'name' => auth()->user()->name,
+            ];
+
+            //Send Mail Invitation
+            Mail::to($member->email)->send(new VotingMail($data, $mailSubject));
         }
     }
 

@@ -173,13 +173,22 @@ class MemberController extends Controller
         
         $acara = ScheduleVoting::where('status',0)->first();
         //dd($acara);
-        $mailSubject = 'Undangan '. $acara->voting_name .' - '. $datas->name;
+        if($acara !=null){
+            $mailSubject = 'Undangan '. $acara->voting_name .' - '. $datas->name;
+        }else{
+            $acara = ScheduleVoting::where('status',1)->first();
+            $mailSubject = 'Undangan '. $acara->voting_name .' - '. $datas->name;
+        }
+        //dd($acara);
+
         $uri_app = env('APP_URL');
 
         $data = [
             'url_invitation' => $uri_app.'/'.'invitation/'.$token,
             'pass' => $strPassword,
             'user' => auth()->user()->email,
+            'username' => str_replace(' ','_',Str::substr(strtolower($datas->name),0,10)), 
+            'name' => auth()->user()->name,
         ];
 
         //Send Mail Invitation

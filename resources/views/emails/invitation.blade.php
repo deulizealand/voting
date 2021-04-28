@@ -1,10 +1,11 @@
 @component('mail::message')
-Hi {{ $data['user'] }} ,
+Hi {{ $data['name'] }} ,
 
-{{ $data['user'] }} would like to invite you to join and help manage their business in {{ env('APP_NAME') }}.
+{{ $data['name'] }} would like to invite you to join and help manage their business in {{ env('APP_NAME') }}.
 
 To accept this invitation, simply click the link below. Or copy and paste the URL on your browser’s address window:
 
+Username : {{ $data['username'] }}<br>
 Your password : {{ $data['pass'] }}<br>
 
 {{ $data['url_invitation'] }}

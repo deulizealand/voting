@@ -105,42 +105,42 @@
     </div>
     <div class="row">
     @if(auth()->user()->role_id == 3)
-        @if($member!= null)
-            @if($member->vote_status == 0)
-                @foreach ($calons as $item)
-                    <div class="col-8 col-md-6 col-lg-4">
-                        <div class="card">
-                            <img class="card-img-top" src="{{ asset('images') }}/{{ $item->img_name }}" alt="{{ $item->name }}">
-                            <div class="card-header">
-                                <div class="d-flex align-items-start">
-                                    <div class="flex-grow-1">
-                                        <h5 class="card-title text-left">{{ $item->name }}</h5>
-                                        <p class="card-text text-left">{{ $item->asal_dapen }}</p>
-                                    </div>
-                                    <div class="d-inline-block ms-3">
-                                        <div class="stat text-center">
-                                            <i class="align-middle text-info">{{ $item->total }}</i>
-                                        </div>
-                                    </div>
+        @foreach ($calons as $item)
+            <div class="col-8 col-md-6 col-lg-4">
+                <div class="card">
+                    <img class="card-img-top" src="{{ asset('images') }}/{{ $item->img_name }}" alt="{{ $item->name }}">
+                    <div class="card-header">
+                        <div class="d-flex align-items-start">
+                            <div class="flex-grow-1">
+                                <h5 class="card-title text-left">{{ $item->name }}</h5>
+                                <p class="card-text text-left">{{ $item->asal_dapen }}</p>
+                            </div>
+                            <div class="d-inline-block ms-3">
+                                <div class="stat text-center">
+                                    <i class="align-middle text-info">{{ $item->total }}</i>
                                 </div>
                             </div>
-                            <div class="card-body">
-                                
-                            </div>
-                            @if(auth()->user()->role_id == 3)
-                                @if($statusVoting)
-                                    @if($statusVoting->status == 1)
-                                    <div class="card-body text-center" id="pilihan">
-                                        <a href="javascript:void(0);" onclick="selectOption({{ $item->id }});" class="btn btn-primary">Pilih</a>
-                                    </div>
-                                    @endif
-                                @endif
-                            @endif
                         </div>
                     </div>
-                @endforeach
-            @endif
-        @endif
+                    <div class="card-body">
+                        
+                    </div>
+                    @if(auth()->user()->role_id == 3)
+                    @if($member!= null)
+                        @if($member->vote_status == 0)
+                            @if($statusVoting)
+                                @if($statusVoting->status == 1)
+                                <div class="card-body text-center" id="pilihan">
+                                    <a href="javascript:void(0);" onclick="selectOption({{ $item->id }});" class="btn btn-primary">Pilih</a>
+                                </div>
+                                @endif
+                            @endif
+                        @endif
+                    @endif
+                    @endif
+                </div>
+            </div>
+        @endforeach
     @else
         @foreach ($calons as $item)
             <div class="col-8 col-md-6 col-lg-4">
