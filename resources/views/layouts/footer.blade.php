@@ -19,7 +19,7 @@
           </div>
           <div class="col-6 text-end">
             <p class="mb-0">
-              &copy; 2021 - Create by <a href="http://dapenmapamsi.id" class="text-muted">Dapenma PAMSI</a>
+              &copy; 2021 - Create by <a href="http://dapenmapamsi.id" class="text-muted">DP PAMSI</a>
             </p>
           </div>
       </div>

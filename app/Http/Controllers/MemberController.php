@@ -181,7 +181,7 @@ class MemberController extends Controller
         }
         //dd($acara);
 
-        $uri_app = env('APP_URL');
+        $uri_app = 'http://voting.dapenmapamsi.id';
 
         $data = [
             'url_invitation' => $uri_app.'/'.'invitation/'.$token,

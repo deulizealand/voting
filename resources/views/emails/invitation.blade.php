@@ -1,20 +1,23 @@
 @component('mail::message')
 Hi {{ $data['name'] }} ,
 
-{{ $data['name'] }} would like to invite you to join and help manage their business in {{ env('APP_NAME') }}.
+{{ $data['name'] }} anda mendapat undangan ini untuk melakukan partisipasi MUNAS Luar Biasa Tahun 2021 yang di selenggarakan oleh Asosiasi Dana Pensiun Indonesia,
 
-To accept this invitation, simply click the link below. Or copy and paste the URL on your browser’s address window:
+Gunakan suara anda untuk memilih calon Ketua Umum dan Ketua Pengawas Perkumpulan ADPI Periode 2021 - 2025.
 
+Di bawah ini adalah hak akses anda.
 Username : {{ $data['username'] }}<br>
-Your password : {{ $data['pass'] }}<br>
+Pasword  : {{ $data['pass'] }}<br>
 
-{{ $data['url_invitation'] }}
+Link Undangan : {{ $data['url_invitation'] }}
 
-This is an automated system email. Please do not reply to this email.
+Yakinkan pilihan anda sebelum menekan tombol pilih pada masing-masing kandidat.
 
-Visit our website at {{ env('APP_NAME') }} to learn more about us, or contact our support at {{ env('MAIL_FROM_ADDRESS') }}.
+Ini adalah email otomatis, mohon tidak membalas email ini.
 
-Thank you.
+Untuk mengunjungi alamat silahkan klink link <a href="http://voting.dapenmapamsi.id">ini</a>
+
+Terima Kasih.
 
 
 Sincerely,<br>
