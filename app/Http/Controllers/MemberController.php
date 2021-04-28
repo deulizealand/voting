@@ -65,9 +65,13 @@ class MemberController extends Controller
                 })
                 ->addColumn('action', function ($data) {
                     $uri_tamu = route('members.create',['sistem_id'=> 1]);
-                    //$uri_add = route('kepesertaan.komda.mitra.create',['komda_id'=> $data->komda_id]);
-                    return '<a href="#" data-id='.$data->id.' data-token="{{csrf_token()}}" data-bs-toggle="tooltip" title="Hapus Posisi">
-                                <i class="align-middle" data-feather="trash"></i></a>';
+                    if($data->status == 0){
+                        return '<a href="#" onclick="postActive('.$data->id.');" data-id='.$data->id.' data-token="{{csrf_token()}}" data-bs-toggle="tooltip" title="Mulai Voting">
+                                <i class="align-middle" data-feather="trash">Kirim Undangan</i></a>';
+                    }else{
+                        return '<a href="#" onclick="postActive('.$data->id.');" data-id='.$data->id.' data-token="{{csrf_token()}}" data-bs-toggle="tooltip" title="Mulai Voting">
+                                <i class="align-middle" data-feather="trash">Undangan Terverifikasi</i></a>';
+                    }
                 })
                 ->rawColumns(['gabungan','action'])
                 ->make(true);

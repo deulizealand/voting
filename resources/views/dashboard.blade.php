@@ -33,7 +33,7 @@
                 <div class="card-body py-4">
                     <div class="d-flex align-items-start">
                         <div class="flex-grow-1">
-                            <h3 class="mb-2">24.300</h3>
+                            <h3 class="mb-2">{{ $jmlPemilih->jml }}</h3>
                             <p class="mb-2">Jumlah Pemilih</p>
                             <div class="mb-0">
                                 <span class="badge badge-soft-success me-2"> <i class="mdi mdi-arrow-bottom-right"></i> +5.35% </span>

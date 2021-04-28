@@ -2,11 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\Invitation;
+use App\Models\Member;
 use App\Models\ScheduleVoting;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
+use Stringable;
 use Yajra\DataTables\DataTables;
 
 class ScheduleVotingController extends Controller
@@ -159,5 +164,39 @@ class ScheduleVotingController extends Controller
             'fail' => false,
             'redirect_url' => route('schedule')
         ]);
+    }
+
+    public function sendInvitation($id)
+    {
+        $datas = Member::find($id);
+        do {
+            //generate a random string using Laravel's str_random helper
+            $token = Str::random(8);
+        } //check if the token already exists and if it does, try again
+        while (User::where('remember_token', $token)->first());
+        
+        $strPassword = Str::random(8);
+
+        $invite = new User();
+        $invite->name = $datas->name;
+        $invite->email = $datas->email;
+        $invite->role_id = 0;
+        $invite->member_id = $datas->id;
+        $invite->password = $strPassword;
+        $invite->remember_token = $token;
+        $invite->save();
+        
+        $acara = ScheduleVoting::where('status',0)->first();
+        $mailSubject = 'Undangan '. $acara->voting_name .' - '. $datas->name;
+        $uri_app = env('APP_NAME');
+
+        $data = [
+            'url_invitation' => $uri_app.'/'.'invitation/'.$token,
+            'pass' => $strPassword,
+            'user' => auth()->user()->name,
+        ];
+
+        //Send Mail Invitation
+        Mail::to($datas->email)->send(new Invitation($data, $mailSubject));
     }
 }

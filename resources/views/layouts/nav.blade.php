@@ -30,9 +30,6 @@
                 <a href="{{ route('members') }}" class="sidebar-link collapsed">
                     <i class="align-middle" data-feather="users"></i> <span class="align-middle">Daftar Pemilih</span>
                 </a>
-                <a href="{{ route('undang-member') }}" class="sidebar-link collapsed">
-                    <i class="align-middle" data-feather="users"></i> <span class="align-middle">Undang Pemilih</span>
-                </a>
             </li>
             <li class="sidebar-item">
                 <a href="" class="sidebar-link collapsed">

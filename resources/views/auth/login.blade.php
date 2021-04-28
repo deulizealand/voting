@@ -20,7 +20,7 @@
                         <div class="text-center">
                             <img src="{{ asset('images/logoadpi.png') }}" alt="Chris Wood" class="img-fluid rounded-circle" width="132" height="132" />
                         </div>
-                        <form method="POST" action="{{ route('admin.login.post') }}">
+                        <form method="POST" action="{{ route('login') }}">
                             @csrf
                             <div class="mb-3">
                                 <label class="form-label">Username/Email</label>
