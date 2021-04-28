@@ -74,6 +74,8 @@ Route::group( ['middleware' => ['auth','verified']], function() {
             Route::get('/{participant_id}/vote', 'DashboardController@addVoting')->name('dashboard.vote');
             Route::get('/jam-sekarang','DashboardController@getJamSaatIni');
             Route::get('/jam-voting','DashboardController@getJamVoting');
+
+            Route::get('/{id}/data-pemilih', 'DashboardController@viewDataPemilih')->name('dashboard.view');
         });
 
         Route::group(['prefix' => 'positions'], function() {

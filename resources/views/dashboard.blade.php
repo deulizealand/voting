@@ -53,7 +53,11 @@
                 <div class="card-body py-4">
                     <div class="d-flex align-items-start">
                         <div class="flex-grow-1">
-                            <h3 class="mb-2">{{ $jmlBlumPilih->jml }}</h3>
+                            <h3 class="mb-2">
+                                <a href="#modalForm" data-href="{{ url()->current() }}/0/data-pemilih" data-bs-toggle="modal" role="button" aria-pressed="true">
+                                    {{ $jmlBlumPilih->jml }}
+                                </a>
+                            </h3>
                             <p class="mb-2">Belum Menyalurkan Pilihan</p>
                             <div class="mb-0">
                                 <span class="badge badge-soft-danger me-2"> <i class="mdi mdi-arrow-bottom-right"></i> </span>
@@ -73,7 +77,11 @@
                 <div class="card-body py-4">
                     <div class="d-flex align-items-start">
                         <div class="flex-grow-1">
-                            <h3 class="mb-2">{{ $jmlPilih->jml }}</h3>
+                            <h3 class="mb-2">
+                                <a href="#modalForm" data-href="{{ url()->current() }}/1/data-pemilih" data-bs-toggle="modal" role="button" aria-pressed="true">
+                                    {{ $jmlPilih->jml }}
+                                </a>
+                            </h3>
                             <p class="mb-2">Sudah Memilih</p>
                             <div class="mb-0">
                                 <span class="badge badge-soft-success me-2"> <i class="mdi mdi-arrow-bottom-right"></i></span>

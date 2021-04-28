@@ -7,6 +7,7 @@ use App\Models\Participant;
 use App\Models\ScheduleVoting;
 use App\Models\Voting;
 use Illuminate\Http\Request;
+use Yajra\DataTables\DataTables;
 
 class DashboardController extends Controller
 {
@@ -28,6 +29,41 @@ class DashboardController extends Controller
         $jmlBlumPilih = Member::select(\DB::raw('count(id) as jml'))->where('vote_status',0)->first();
         $member = Member::find(auth()->user()->member_id);
         return view('dashboard',compact('calons','member','statusVoting','jmlPemilih','jmlPilih','jmlBlumPilih'));
+    }
+
+    public function viewDataPemilih(Request $request, $id)
+    {
+        /*if($request->ajax()){
+            $members  = Member::select(\DB::raw('id,name,vote_status'))
+                    ->where('vote_status',$id)
+                    ->get();
+
+            return DataTables::of($members)
+                    ->addColumn('gabungan', function ($data) {
+                        return '<div class="media-left">
+                                    <div class="media-body">
+                                        <span class="text-semibold">'.$data->name.'</span>
+                                    </div>
+                                </div>';
+                    })
+                    ->editColumn('status',function($data){
+                        if($data->vote_status==1){
+                            return '<span class="badge bg-success">Sudah Memilih</span>';
+                        }else{
+                            return '<span class="badge bg-warning">Belum Memilih</span>';
+                        }
+                    })
+                    ->rawColumns(['gabungan','status'])
+                    ->make(true);
+        }*/
+        $members  = Member::select(\DB::raw('id,name'))
+                    ->where('vote_status',$id)
+                    ->get();
+        $id = $id;
+        $pilih = Member::find($id);
+        $save_state = 'view';
+        $title ="View Data Pemilih";
+        return view('vote',compact('pilih','members','id','save_state','title'));
     }
 
     public function addVoting(Request $request, $id)
