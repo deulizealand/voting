@@ -71,8 +71,9 @@ Route::group( ['middleware' => ['auth','verified']], function() {
         Route::group(['prefix' => 'dashboard'], function() {
             Route::get('/','DashboardController@index')->name('dashboard');
 
-            Route::match(['get', 'post'],'/{participant_id}/vote', 'DashboardController@addVoting')->name('dashboard.vote');
-
+            Route::get('/{participant_id}/vote', 'DashboardController@addVoting')->name('dashboard.vote');
+            Route::get('/jam-sekarang','DashboardController@getJamSaatIni');
+            Route::get('/jam-voting','DashboardController@getJamVoting');
         });
 
         Route::group(['prefix' => 'positions'], function() {

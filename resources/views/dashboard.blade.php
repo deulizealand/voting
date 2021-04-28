@@ -91,30 +91,33 @@
     </div>
     <div class="row mb-2 mb-xl-3">
         <div class="col-auto d-none d-sm-block">
-            <h3>Live Voting</h3>
+            @php $jamSekarang = date('H:i:s A'); @endphp
+            <h3>Live Voting </h3>
         </div>
     </div>
     <div class="row">
-    @foreach ($calons as $item)
-        <div class="col-8 col-md-6 col-lg-4">
-            <div class="card">
-                <img class="card-img-top" src="{{ asset('images') }}/{{ $item->img_name }}" alt="{{ $item->name }}">
-                <div class="card-header">
-                    <h5 class="card-title mb-0 text-center">{{ $item->name }}</h5>
-                    <p class="card-text text-center">{{ $item->asal_dapen }}</p>
+    @if($member->vote_status == 0)
+        @foreach ($calons as $item)
+            <div class="col-8 col-md-6 col-lg-4">
+                <div class="card">
+                    <img class="card-img-top" src="{{ asset('images') }}/{{ $item->img_name }}" alt="{{ $item->name }}">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0 text-center">{{ $item->name }}</h5>
+                        <p class="card-text text-center">{{ $item->asal_dapen }}</p>
+                    </div>
+                    @if(auth()->user()->role_id == 3)
+                        @if($statusVoting)
+                            @if($statusVoting->status == 1)
+                            <div class="card-body text-center" id="pilihan">
+                                <a href="javascript:void(0);" onclick="selectOption({{ $item->id }});" class="btn btn-primary">Pilih</a>
+                            </div>
+                            @endif
+                        @endif
+                    @endif
                 </div>
-                @if(auth()->user()->role_id == 3)
-                    @if($statusVoting)
-                    @if($statusVoting->status == 1)
-                        <div class="card-body text-center">
-                            <a href="#" class="btn btn-primary">Pilih</a>
-                        </div>
-                    @endif
-                    @endif
-                @endif
             </div>
-        </div>
-    @endforeach
+        @endforeach
+    @endif
     </div>
     @include('partials.modals.template')
 @stop
@@ -124,7 +127,22 @@
     @push('scripts')
     <script type="text/javascript">
         var uri = "{{ url()->current() }}";
-        
+        var jamServer = $('#jamSaatIni').text();
+        //console.log(jamServer);
+
+        function selectOption(id)
+        {
+            $.ajax({
+                url :  uri + '/' + id + '/vote',
+                type : 'get',
+                success : function(data) {
+                    //table.draw();
+                    toastr.info('Pilihan anda sudah di simpan, terima kasih telah menggunakan hak suara anda!', 'info', {timeOut: 5000});
+                    location.reload();
+                }
+            });
+        }
+
         var table = $('.dataUndangan').DataTable({
             processing:true,
             serverSide:true,
