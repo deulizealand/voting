@@ -30,6 +30,7 @@ class DashboardController extends Controller
         $jmlPilih = Member::select(\DB::raw('count(id) as jml'))->where('vote_status',1)->first();
         $jmlBlumPilih = Member::select(\DB::raw('count(id) as jml'))->where('vote_status',0)->first();
         $member = Member::find(auth()->user()->member_id);
+        //dd($member);
         return view('dashboard',compact('calons','member','statusVoting','jmlPemilih','jmlPilih','jmlBlumPilih'));
     }
 

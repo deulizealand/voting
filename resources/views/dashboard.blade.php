@@ -126,17 +126,16 @@
                         
                     </div>
                     @if(auth()->user()->role_id == 3)
-                    @if($member!= null)
-                        @if($member->vote_status == 0)
-                            @if($statusVoting)
-                                @if($statusVoting->status == 1)
-                                <div class="card-body text-center" id="pilihan">
-                                    <a href="javascript:void(0);" onclick="selectOption({{ $item->id }});" class="btn btn-primary">Pilih</a>
-                                </div>
+                        
+                            @if($member->vote_status == 0)
+                                @if($statusVoting)
+                                    @if($statusVoting->status == 1)
+                                    <div class="card-body text-center" id="pilihan">
+                                        <a href="javascript:void(0);" onclick="selectOption({{ $item->id }});" class="btn btn-primary">Pilih</a>
+                                    </div>
+                                    @endif
                                 @endif
                             @endif
-                        @endif
-                    @endif
                     @endif
                 </div>
             </div>

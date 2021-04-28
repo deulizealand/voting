@@ -5,11 +5,11 @@ Hi {{ $data['name'] }} ,
 
 Gunakan suara anda untuk memilih calon Ketua Umum dan Ketua Pengawas Perkumpulan ADPI Periode 2021 - 2025.
 
-Di bawah ini adalah hak akses anda.
+Di bawah ini adalah hak akses anda.<br>
 Username : {{ $data['username'] }}<br>
 Pasword  : {{ $data['pass'] }}<br>
 
-Link Undangan : {{ $data['url_invitation'] }}
+Link Undangan : <a href="{{ $data['url_invitation'] }}"> Klik Link ini untuk aktifasi</a><br>
 
 Yakinkan pilihan anda sebelum menekan tombol pilih pada masing-masing kandidat.
 
