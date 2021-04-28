@@ -70,7 +70,7 @@ Route::group( ['middleware' => 'auth'], function() {
         Route::group(['prefix' => 'dashboard'], function() {
             Route::get('/','DashboardController@index')->name('dashboard');
 
-            Route::match(['get', 'post'],'/{participant_id}/vote', 'PositionController@addVoting')->name('dashboard.vote');
+            Route::match(['get', 'post'],'/{participant_id}/vote', 'DashboardController@addVoting')->name('dashboard.vote');
 
         });
 
