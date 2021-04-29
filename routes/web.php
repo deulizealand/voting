@@ -80,6 +80,7 @@ Route::group( ['middleware' => ['auth','verified']], function() {
             Route::get('/{id}/data-pemilih', 'DashboardController@viewDataPemilih')->name('dashboard.view');
 
             Route::get('/refresh','DashboardController@refreshPemilih');
+            Route::get('/refresh-pengawas','DashboardController@refreshPemilihPengawas');
         });
 
         Route::group(['prefix' => 'positions'], function() {
