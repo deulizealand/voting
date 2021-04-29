@@ -15,8 +15,8 @@ class CreateVotingsTable extends Migration
     {
         Schema::create('votings', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('participant_id')->unique();
-            $table->integer('member_id')->unique();
+            $table->integer('participant_id');
+            $table->integer('member_id');
             $table->string('ip_address',30);
             $table->text('browser')->nullable();
             $table->timestamps();

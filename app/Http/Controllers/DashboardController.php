@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\VotingMail;
 use App\Models\Member;
 use App\Models\Participant;
+use App\Models\Position;
 use App\Models\ScheduleVoting;
 use App\Models\Voting;
 use Illuminate\Http\Request;
@@ -23,15 +24,22 @@ class DashboardController extends Controller
         $calons = Participant::select(\DB::raw('participants.id,participants.name,participants.asal_dapen,participants.img_name,positions.name as jabatan,
                     ifnull((select count(id) as jml from votings where votings.participant_id=participants.id group by id),0) as total'))
                     ->join('positions','positions.id','=','participants.position_id')
+                    ->where('participants.position_id',1)
                     ->get();
 
+        $pengawas = Participant::select(\DB::raw('participants.id,participants.name,participants.asal_dapen,participants.img_name,positions.name as jabatan,
+                    ifnull((select count(id) as jml from votings where votings.participant_id=participants.id group by id),0) as total'))
+                    ->join('positions','positions.id','=','participants.position_id')
+                    ->where('participants.position_id',2)
+                    ->get();
+        $posisi = Position::all();
         $statusVoting = ScheduleVoting::where('status',1)->get()->first();
         $jmlPemilih = Member::select(\DB::raw('count(id) as jml'))->first();
         $jmlPilih = Member::select(\DB::raw('count(id) as jml'))->where('vote_status',1)->first();
         $jmlBlumPilih = Member::select(\DB::raw('count(id) as jml'))->where('vote_status',0)->first();
         $member = Member::find(auth()->user()->member_id);
-        //dd($member);
-        return view('dashboard',compact('calons','member','statusVoting','jmlPemilih','jmlPilih','jmlBlumPilih'));
+        //dd($calons);
+        return view('dashboard',compact('calons','posisi','pengawas','member','statusVoting','jmlPemilih','jmlPilih','jmlBlumPilih'));
     }
 
     public function viewDataPemilih(Request $request, $id)
@@ -73,14 +81,47 @@ class DashboardController extends Controller
     {
         if($request->ajax())
         {
+            
+            $partisipan = Participant::find($id);
+
             $voting = new Voting();
             $voting->participant_id = $id;
             $voting->member_id = auth()->user()->member_id;
             $voting->ip_address = $this->getIp();
+            $voting->position_id = $partisipan->position_id;
+            $voting->save();
+            //dd($member);
+            $member = Member::find(auth()->user()->member_id);
+            $member->vote_status = 1;
+            $member->save();
+
+            $mailSubject ="Terima Kasih Telah Menggunakan Suara Anda";
+            
+            $data = [
+                'user' => auth()->user()->email,
+                'name' => auth()->user()->name,
+            ];
+
+            //Send Mail Invitation
+            Mail::to($member->email)->send(new VotingMail($data, $mailSubject));
+        }
+    }
+
+    public function addVotingPengawas(Request $request, $id)
+    {
+        if($request->ajax())
+        {
+            $partisipan = Participant::find($id);
+
+            $voting = new Voting();
+            $voting->participant_id = $id;
+            $voting->member_id = auth()->user()->member_id;
+            $voting->position_id = $partisipan->position_id;
+            $voting->ip_address = $this->getIp();
             $voting->save();
 
             $member = Member::find(auth()->user()->member_id);
-            $member->vote_status = 1;
+            $member->vote_pengawas = 1;
             $member->save();
 
             $mailSubject ="Terima Kasih Telah Menggunakan Suara Anda";
@@ -108,6 +149,20 @@ class DashboardController extends Controller
         }
         return request()->ip(); // it will return server ip when no client ip found
     } 
+
+    public function refreshPemilih(Request $request)
+    {
+        if($request->ajax())
+        {
+            $calons = Participant::select(\DB::raw('participants.id,participants.position_id,
+                    ifnull((select count(id) as jml from votings where votings.participant_id=participants.id and participants.position_id=votings.position_id group by id),0) as total'))
+                    ->join('positions','positions.id','=','participants.position_id')
+                    ->get();
+
+            return response()->json($calons);
+        }
+        
+    }
 
     public function getJamSaatIni(Request $request)
     {

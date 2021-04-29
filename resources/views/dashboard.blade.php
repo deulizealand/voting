@@ -105,65 +105,154 @@
     </div>
     <div class="row">
     @if(auth()->user()->role_id == 3)
-        @foreach ($calons as $item)
-            <div class="col-8 col-md-6 col-lg-4">
-                <div class="card">
-                    <img class="card-img-top" src="{{ asset('images') }}/{{ $item->img_name }}" alt="{{ $item->name }}">
-                    <div class="card-header">
-                        <div class="d-flex align-items-start">
-                            <div class="flex-grow-1">
-                                <h5 class="card-title text-left">{{ $item->name }}</h5>
-                                <p class="card-text text-left">{{ $item->asal_dapen }}</p>
-                            </div>
-                            <div class="d-inline-block ms-3">
-                                <div class="stat text-center">
-                                    <i class="align-middle text-info">{{ $item->total }}</i>
+        <div class="col-md-6 col-sm-6 col-xs-12 mb-2">
+            <div class="card-header">
+                <div class="card-title">Ketua Umum</div>
+            </div>
+            <div class="row">
+                @foreach ($calons as $item)
+                    <div class="col-12 col-md-6 col-lg-6">
+                        <div class="card">
+                            <img class="card-img-top" src="{{ asset('images') }}/{{ $item->img_name }}" alt="{{ $item->name }}">
+                            <div class="card-header">
+                                <div class="d-flex align-items-start">
+                                    <div class="flex-grow-1">
+                                        <h5 class="card-title text-left">{{ $item->name }}</h5>
+                                        <p class="card-text text-left">{{ $item->asal_dapen }}</p>
+                                    </div>
+                                    <div class="d-inline-block ms-3">
+                                        <div class="stat text-center">
+                                            <i class="align-middle text-info" id="total-{{ $item->id }}"></i>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        
-                    </div>
-                    @if(auth()->user()->role_id == 3)
-                        
-                            @if($member->vote_status == 0)
-                                @if($statusVoting)
-                                    @if($statusVoting->status == 1)
-                                    <div class="card-body text-center" id="pilihan">
-                                        <a href="javascript:void(0);" onclick="selectOption({{ $item->id }});" class="btn btn-primary">Pilih</a>
-                                    </div>
+                            <div class="card-body">
+                                
+                            </div>
+                            @if(auth()->user()->role_id == 3)
+                                @if($member->vote_status == 0)
+                                    @if($statusVoting)
+                                        @if($statusVoting->status == 1)
+                                        <div class="card-body text-center" id="pilihan">
+                                            <a href="javascript:void(0);" onclick="selectOption({{ $item->id }});" class="btn btn-primary">Pilih</a>
+                                        </div>
+                                        @endif
                                     @endif
                                 @endif
                             @endif
-                    @endif
-                </div>
+                        </div>
+                    </div>
+                @endforeach
+
             </div>
-        @endforeach
-    @else
-        @foreach ($calons as $item)
-            <div class="col-8 col-md-6 col-lg-4">
-                <div class="card">
-                    <img class="card-img-top" src="{{ asset('images') }}/{{ $item->img_name }}" alt="{{ $item->name }}">
-                    <div class="card-header">
-                        <div class="d-flex align-items-start">
-                            <div class="flex-grow-1">
-                                <h5 class="card-title text-left">{{ $item->name }}</h5>
-                                <p class="card-text text-left">{{ $item->asal_dapen }}</p>
-                            </div>
-                            <div class="d-inline-block ms-3">
-                                <div class="stat text-center">
-                                    <i class="align-middle text-info">{{ $item->total }}</i>
+        </div>
+        
+        <div class="col-md-6 col-sm-6 col-xs-12 mb-2">
+            <div class="card-header">
+                <div class="card-title">Ketua Pengawas</div>
+            </div>
+            <div class="row">
+                @foreach ($pengawas as $item)
+                    <div class="col-12 col-md-6 col-lg-6">
+                        <div class="card">
+                            <img class="card-img-top" src="{{ asset('images') }}/{{ $item->img_name }}" alt="{{ $item->name }}">
+                            <div class="card-header">
+                                <div class="d-flex align-items-start">
+                                    <div class="flex-grow-1">
+                                        <h5 class="card-title text-left">{{ $item->name }}</h5>
+                                        <p class="card-text text-left">{{ $item->asal_dapen }}</p>
+                                    </div>
+                                    <div class="d-inline-block ms-3">
+                                        <div class="stat text-center">
+                                            <i class="align-middle text-info" id="total-{{ $item->id }}"></i>
+                                        </div>
+                                    </div>
                                 </div>
+                            </div>
+                            <div class="card-body">
+                                
+                            </div>
+                            @if(auth()->user()->role_id == 3)
+                                @if($member->vote_pengawas == 0)
+                                    @if($statusVoting)
+                                        @if($statusVoting->status == 1)
+                                        <div class="card-body text-center" id="pilihanPengawas">
+                                            <a href="javascript:void(0);" onclick="selectPengawas({{ $item->id }});" class="btn btn-primary">Pilih</a>
+                                        </div>
+                                        @endif
+                                    @endif
+                                @endif
+                            @endif
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+        
+    @else
+        <div class="col-md-6 col-sm-6 col-xs-12 mb-2">
+            <div class="card-header">
+                <div class="card-title">Ketua Umum</div>
+            </div>
+            <div class="row">
+                @foreach ($calons as $item)
+                    <div class="col-12 col-md-6 col-lg-6">
+                        <div class="card">
+                            <img class="card-img-top" src="{{ asset('images') }}/{{ $item->img_name }}" alt="{{ $item->name }}">
+                            <div class="card-header">
+                                <div class="d-flex align-items-start">
+                                    <div class="flex-grow-1">
+                                        <h5 class="card-title text-left">{{ $item->name }}</h5>
+                                        <p class="card-text text-left">{{ $item->asal_dapen }}</p>
+                                    </div>
+                                    <div class="d-inline-block ms-3">
+                                        <div class="stat text-center">
+                                            <i class="align-middle text-info" id="total-{{ $item->id }}"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                
                             </div>
                         </div>
                     </div>
-                    <div class="card-body">
-                        
-                    </div>
-                </div>
+                @endforeach
             </div>
-        @endforeach
+        </div>
+        
+        <div class="col-md-6 col-sm-6 col-xs-12 mb-2">
+            <div class="card-header">
+                <div class="card-title">Ketua Pengawas</div>
+            </div>
+            <div class="row">
+                @foreach ($pengawas as $item)
+                    <div class="col-12 col-md-6 col-lg-6">
+                        <div class="card">
+                            <img class="card-img-top" src="{{ asset('images') }}/{{ $item->img_name }}" alt="{{ $item->name }}">
+                            <div class="card-header">
+                                <div class="d-flex align-items-start">
+                                    <div class="flex-grow-1">
+                                        <h5 class="card-title text-left">{{ $item->name }}</h5>
+                                        <p class="card-text text-left">{{ $item->asal_dapen }}</p>
+                                    </div>
+                                    <div class="d-inline-block ms-3">
+                                        <div class="stat text-center">
+                                            <i class="align-middle text-info" id="total-{{ $item->id }}"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+        
     @endif
     </div>
     @include('partials.modals.template')
@@ -177,6 +266,22 @@
         var jamServer = $('#jamSaatIni').text();
         //console.log(jamServer);
 
+        setInterval(function() {refreshData()}, 1000);
+
+        function refreshData()
+        {
+            $.ajax({
+                url :  uri + '/refresh',
+                type : 'get',
+                success : function(data) {
+                    //table.draw();
+                    for(var a=0;a<data.length;a++){
+                        $('#total-'+data[a].id).text(data[a].total);
+                    }
+                }
+            });
+        }
+
         function selectOption(id)
         {
             $.ajax({
@@ -186,6 +291,21 @@
                     //table.draw();
                     toastr.info('Pilihan anda sudah di simpan, terima kasih telah menggunakan hak suara anda!', 'info', {timeOut: 5000});
                     location.reload();
+                    refreshData();
+                }
+            });
+        }
+
+        function selectPengawas(id)
+        {
+            $.ajax({
+                url :  uri + '/' + id + '/vote-pengawas',
+                type : 'get',
+                success : function(data) {
+                    //table.draw();
+                    toastr.info('Pilihan anda sudah di simpan, terima kasih telah menggunakan hak suara anda!', 'info', {timeOut: 5000});
+                    location.reload();
+                    //refreshData();
                 }
             });
         }

@@ -72,10 +72,14 @@ Route::group( ['middleware' => ['auth','verified']], function() {
             Route::get('/','DashboardController@index')->name('dashboard');
 
             Route::get('/{participant_id}/vote', 'DashboardController@addVoting')->name('dashboard.vote');
+            Route::get('/{participant_id}/vote-pengawas','DashboardController@addVotingPengawas')->name('dashboard.vote-pengawas');
+
             Route::get('/jam-sekarang','DashboardController@getJamSaatIni');
             Route::get('/jam-voting','DashboardController@getJamVoting');
 
             Route::get('/{id}/data-pemilih', 'DashboardController@viewDataPemilih')->name('dashboard.view');
+
+            Route::get('/refresh','DashboardController@refreshPemilih');
         });
 
         Route::group(['prefix' => 'positions'], function() {
