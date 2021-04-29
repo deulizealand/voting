@@ -281,6 +281,20 @@
                 }
             });
         }
+        
+        function refreshDataPengawas()
+        {
+            $.ajax({
+                url :  uri + '/refresh-pengawas',
+                type : 'get',
+                success : function(data) {
+                    //table.draw();
+                    for(var a=0;a<data.length;a++){
+                        $('#total-'+data[a].id).text(data[a].total);
+                    }
+                }
+            });
+        }
 
         function selectOption(id)
         {
