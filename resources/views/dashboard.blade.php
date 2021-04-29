@@ -239,7 +239,7 @@
                                     </div>
                                     <div class="d-inline-block ms-3">
                                         <div class="stat text-center">
-                                            <i class="align-middle text-info" id="total-{{ $item->id }}"></i>
+                                            <i class="align-middle text-info" id="jumlah-{{ $item->id }}"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -290,7 +290,7 @@
                 success : function(data) {
                     //table.draw();
                     for(var a=0;a<data.length;a++){
-                        $('#total-'+data[a].id).text(data[a].total);
+                        $('#jumlah-'+data[a].id).text(data[a].total);
                     }
                 }
             });
