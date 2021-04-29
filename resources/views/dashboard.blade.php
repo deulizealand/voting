@@ -165,7 +165,7 @@
                                     </div>
                                     <div class="d-inline-block ms-3">
                                         <div class="stat text-center">
-                                            <i class="align-middle text-info" id="total-{{ $item->id }}"></i>
+                                            <i class="align-middle text-info" id="jumlah-{{ $item->id }}"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -267,6 +267,7 @@
         //console.log(jamServer);
 
         setInterval(function() {refreshData()}, 1000);
+        setInterval(function() {refreshDataPengawas()}, 1000);
 
         function refreshData()
         {
@@ -289,6 +290,7 @@
                 type : 'get',
                 success : function(data) {
                     //table.draw();
+                    //console.log(data);
                     for(var a=0;a<data.length;a++){
                         $('#jumlah-'+data[a].id).text(data[a].total);
                     }
@@ -306,6 +308,7 @@
                     toastr.info('Pilihan anda sudah di simpan, terima kasih telah menggunakan hak suara anda!', 'info', {timeOut: 5000});
                     location.reload();
                     refreshData();
+                    refreshDataPengawas();
                 }
             });
         }
@@ -319,6 +322,8 @@
                     //table.draw();
                     toastr.info('Pilihan anda sudah di simpan, terima kasih telah menggunakan hak suara anda!', 'info', {timeOut: 5000});
                     location.reload();
+                    refreshData();
+                    refreshDataPengawas();
                     //refreshData();
                 }
             });

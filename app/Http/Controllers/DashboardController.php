@@ -21,17 +21,16 @@ class DashboardController extends Controller
 
     public function index(Request $request)
     {
-        $calons = Participant::select(\DB::raw('participants.id,participants.name,participants.asal_dapen,participants.img_name,positions.name as jabatan,
-                    ifnull((select count(id) as jml from votings where votings.participant_id=participants.id group by id),0) as total'))
+        $calons = Participant::select(\DB::raw('participants.id,participants.name,participants.asal_dapen,participants.img_name,positions.name as jabatan'))
                     ->join('positions','positions.id','=','participants.position_id')
                     ->where('participants.position_id',1)
                     ->get();
 
-        $pengawas = Participant::select(\DB::raw('participants.id,participants.name,participants.asal_dapen,participants.img_name,positions.name as jabatan,
-                    ifnull((select count(id) as jml from votings where votings.participant_id=participants.id group by id),0) as total'))
+        $pengawas = Participant::select(\DB::raw('participants.id,participants.name,participants.asal_dapen,participants.img_name,positions.name as jabatan'))
                     ->join('positions','positions.id','=','participants.position_id')
                     ->where('participants.position_id',2)
                     ->get();
+
         $posisi = Position::all();
         $statusVoting = ScheduleVoting::where('status',1)->get()->first();
         $jmlPemilih = Member::select(\DB::raw('count(id) as jml'))->first();
@@ -152,31 +151,60 @@ class DashboardController extends Controller
 
     public function refreshPemilih(Request $request)
     {
-        if($request->ajax())
-        {
-            $calons = Participant::select(\DB::raw('participants.id,participants.position_id,
+        //if($request->ajax()){
+            /*$calons = Participant::select(\DB::raw('participants.id,participants.position_id,
                     ifnull((select count(id) as jml from votings where votings.participant_id=participants.id and participants.position_id=votings.position_id group by id),0) as total'))
                     ->join('positions','positions.id','=','participants.position_id')
                     ->where('participants.position_id',1)
                     ->get();
 
-            return response()->json($calons);
-        }
+            return response()->json($calons);*/
+
+            $calons = Participant::select(\DB::raw('participants.id,participants.position_id'))
+                    ->join('positions','positions.id','=','participants.position_id')
+                    ->where('participants.position_id',1);
+
+            $leftJoin = Voting::select(\DB::raw(' participant_id,position_id,count(id) as jml'))
+                        ->groupBy('participant_id','position_id');
+
+            
+            $joinResults = Voting::select(\DB::raw('a.id,a.position_id,ifnull(b.jml,0) as total'))
+                        ->from(\DB::raw('('.$calons->toSql().') as a '))
+                        ->mergeBindings($calons->getQuery())
+                        ->leftJoinSub($leftJoin,'b',function($join){
+                            $join->on('a.id','=','b.participant_id');
+                            $join->on('b.position_id','=','a.position_id');
+                        })
+                        ->get();
+                    
+            return response()->json($joinResults);
+        //}
         
     }
     
     public function refreshPemilihPengawas(Request $request)
     {
-        if($request->ajax())
-        {
-            $calons = Participant::select(\DB::raw('participants.id,participants.position_id,
-                    ifnull((select count(id) as jml from votings where votings.participant_id=participants.id and participants.position_id=votings.position_id group by id),0) as total'))
+        //if($request->ajax()){
+            $calons = Participant::select(\DB::raw('participants.id,participants.position_id'))
                     ->join('positions','positions.id','=','participants.position_id')
-                    ->where('participants.position_id',2)
-                    ->get();
+                    ->where('participants.position_id',2);
 
-            return response()->json($calons);
-        }
+            $leftJoin = Voting::select(\DB::raw(' participant_id,position_id,count(id) as jml'))
+                        ->groupBy('participant_id','position_id');
+
+            
+            $joinResults = Voting::select(\DB::raw('a.id,a.position_id,ifnull(b.jml,0) as total'))
+                        ->from(\DB::raw('('.$calons->toSql().') as a '))
+                        ->mergeBindings($calons->getQuery())
+                        ->leftJoinSub($leftJoin,'b',function($join){
+                            $join->on('a.id','=','b.participant_id');
+                            $join->on('b.position_id','=','a.position_id');
+                        })
+                        ->get();
+
+
+            return response()->json($joinResults);
+        //}
         
     }
 
