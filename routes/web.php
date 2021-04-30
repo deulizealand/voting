@@ -106,6 +106,10 @@ Route::group( ['middleware' => ['auth','verified']], function() {
             Route::match(['get', 'post'],'/1/import','MemberController@dapenUpload')->name('members.upload');
 
             Route::match(['get', 'post'],'/{id}/kirim-undangan','MemberController@sendInvitation')->name('members.send-invitation');
+
+            Route::get('/mass-mail','MemberController@sendEmailMassal')->name('members.mass-mail');
+            Route::get('/mass-file','MemberController@sendEmailBahanPresentasi')->name('members.mass-file');
+            Route::get('/invitation','MemberController@sendUndangan')->name('members.invitation');
         });
 
         Route::group(['prefix' => 'schedule'], function() {

@@ -18,6 +18,7 @@
                     <div class="dropdown-menu" aria-labelledby="download">
                         <a href="#modalForm" data-href="{{ url()->current() }}/1/create" data-bs-toggle="modal" class="dropdown-item" role="button" aria-pressed="true">Member Baru</a>
                         <a href="#modalForm" data-href="{{ url()->current() }}/1/import" data-bs-toggle="modal" class="dropdown-item" aria-pressed="true">Upload Dana Pensiun</a>
+                        <a href="{{ url()->current() }}/invitation" class="dropdown-item" aria-pressed="true">Kirim Undangan</a>
                     </div>
                 </div>
                 <div class="col-md-4 text-right">

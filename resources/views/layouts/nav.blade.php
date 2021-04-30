@@ -1,7 +1,7 @@
 <nav id="sidebar" class="sidebar">
     <div class="sidebar-content js-simplebar">
         <a class="sidebar-brand" href="#">
-            <img src="{{ asset('images/logoadpi.png') }}" class="logo"/>
+            <img src="{{ asset('images/adpilogo.png') }}" class="logo" width="42px" height="42px"/>
             <span class="align-middle me-3">eVoting</span>
         </a>
         <ul class="sidebar-nav">

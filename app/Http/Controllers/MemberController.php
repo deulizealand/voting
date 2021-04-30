@@ -3,14 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Imports\DapenImport;
+use App\Jobs\SendEmailJob;
+use App\Jobs\SendEmailMassalJob;
+use App\Jobs\SendInvitationEmailJob;
+use App\Mail\AttachEmailPresentasi;
 use App\Mail\Invitation;
+use App\Mail\PengantarEmail;
 use App\Models\Member;
 use App\Models\ScheduleVoting;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\DataTables;
 use Excel;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
@@ -151,6 +158,7 @@ class MemberController extends Controller
         do {
             //generate a random string using Laravel's str_random helper
             $token = Str::random(8);
+            //$tokenHash = Hash::make($token);
         } //check if the token already exists and if it does, try again
         while (User::where('remember_token', $token)->first());
         
@@ -183,18 +191,137 @@ class MemberController extends Controller
 
         $uri_app = 'http://voting.dapenmapamsi.id';
 
+        $hari = Carbon::parse($acara->voting_date);
+        $namaHari = $hari->locale('id')->dayName;
         $data = [
             'url_invitation' => $uri_app.'/'.'invitation/'.$token,
             'pass' => $strPassword,
-            'user' => auth()->user()->email,
+            'user' => $datas->email,
+            'acara' => $acara->voting_name,
+            'hari' => $namaHari,
+            'tanggal'=> $acara->voting_date,
+            'jamMulai' => $acara->voting_time,
+            'jamSelesai' => $acara->voting_end,
             'username' => str_replace(' ','_',Str::substr(strtolower($datas->name),0,10)), 
-            'name' => auth()->user()->name,
+            'name' => $datas->name,
         ];
 
         //Send Mail Invitation
-        Mail::to($datas->email)->send(new Invitation($data, $mailSubject));
+        dispatch(new SendInvitationEmailJob($datas->email,$mailSubject,$data));
 
         $datas->status = 1;
         $datas->save();
+    }
+
+    public function sendEmailMassal()
+    {
+        $members = Member::select(\DB::raw('id,name,email'))->get();
+
+        $mailSubject = 'Verfikasi Alamat Email Sistem eVoting';
+        
+        foreach ($members as $value) {
+            # code...
+            //Mail::to($value->email)->send(new PengantarEmail($data, $mailSubject));
+            dispatch(new SendEmailJob($value->email));
+        }
+
+        $notification = array(
+            'message' => 'Pengiriman Email massal telah berhasil!',
+            'alert-type' => 'success'
+        ); 
+
+        return redirect(route('dashboard'))->with($notification);
+    }
+
+    public function sendEmailBahanPresentasi()
+    {
+        $members = Member::select(\DB::raw('id,name,email'))->get();
+
+        $mailSubject = 'File Presentasi';
+        $file = storage_path('app/public/2021_Pra_MUnas-LB_ADPI.pptx');
+        foreach ($members as $value) {
+            # code...
+            $data = [
+                'user' => $value->email,
+                'name' => auth()->user()->name,
+            ];
+            dispatch(new SendEmailMassalJob($value->email, $mailSubject, $file));
+            //Send Mail Invitation
+            //Mail::to($value->email)->send(new AttachEmailPresentasi($data, $mailSubject,$file));
+        }
+    }
+
+    public function sendUndangan()
+    {
+        $members = Member::select(\DB::raw('id,name,email'))->where('status',0)->get();
+
+        foreach ($members as $value) {
+            # code...
+            $datas = Member::find($value->id);
+            do {
+                //generate a random string using Laravel's str_random helper
+                $token = Str::random(8);
+                $tokenHash = Hash::make($token);
+            } //check if the token already exists and if it does, try again
+            while (User::where('remember_token', $token)->first());
+            
+            $strPassword = Str::random(8);
+
+            $user = User::where('email',$datas->email)->first();
+            if(!$user){
+                $invite = new User();
+                $invite->name = $datas->name;
+                $invite->email = $datas->email;
+                $invite->username = str_replace(' ','_',Str::substr(strtolower($datas->name),0,10));
+                $invite->role_id = 3;
+                $invite->member_id = $datas->id;
+                $invite->password = $strPassword;
+                $invite->remember_token = $token;
+                $invite->save();
+            }else{
+                $token = $user->remember_token;
+            }
+            
+            $acara = ScheduleVoting::where('status',0)->first();
+            
+            if($acara !=null){
+                $mailSubject = 'Undangan '. $acara->voting_name .' - '. $datas->name;
+            }else{
+                $acara = ScheduleVoting::where('status',1)->first();
+                $mailSubject = 'Undangan '. $acara->voting_name .' - '. $datas->name;
+            }
+            //dd($acara);
+
+            $uri_app = 'http://voting.dapenmapamsi.id';
+
+            $hari = Carbon::parse($acara->voting_date);
+            $namaHari = $hari->locale('id')->dayName;
+
+            $data = [
+                'url_invitation' => $uri_app.'/'.'invitation/'.$token,
+                'pass' => $strPassword,
+                'user' => $value->email,
+                'acara' => $acara->voting_name,
+                'hari' => $namaHari,
+                'tanggal'=> $acara->voting_date,
+                'jamMulai' => $acara->voting_time,
+                'jamSelesai' => $acara->voting_end,
+                'username' => str_replace(' ','_',Str::substr(strtolower($datas->name),0,10)), 
+                'name' => $value->name,
+            ];
+            //dd($data);
+            //Mail::to($value->email)->send(new PengantarEmail($data, $mailSubject));
+            dispatch(new SendInvitationEmailJob($value->email,$mailSubject,$data));
+
+            $datas->status = 1;
+            $datas->save();
+        }
+
+        $notification = array(
+            'message' => 'Pengiriman Undangan eVoting telah berhasil!',
+            'alert-type' => 'success'
+        ); 
+
+        return redirect(route('members'))->with($notification);
     }
 }

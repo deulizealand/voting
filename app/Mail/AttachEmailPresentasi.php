@@ -7,23 +7,22 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class Invitation extends Mailable
+class AttachEmailPresentasi extends Mailable
 {
     use Queueable, SerializesModels;
-    public $userInvitation;
+    private $userInvitation;
     public $subject;
-    public $body;
-
+    public $fileEmail;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($userInvitation, $subject,$body)
+    public function __construct($userInvitation, $subject, $fileEmail)
     {
         $this->userInvitation = $userInvitation;
         $this->subject = $subject;
-        $this->body = $body;
+        $this->fileEmail = $fileEmail;
     }
 
     /**
@@ -33,9 +32,10 @@ class Invitation extends Mailable
      */
     public function build()
     {
-        return $this->markdown('emails.invitation')
-                    ->to($this->userInvitation)
+        $path = storage_path('app/public');
+        return $this->markdown('emails.pengantar')
                     ->subject($this->subject)
-                    ->with('data',$this->body);
+                    ->attach($this->fileEmail)
+                    ->with('data',$this->userInvitation);
     }
 }

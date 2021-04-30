@@ -7,20 +7,18 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class VotingMail extends Mailable
+class PengantarEmail extends Mailable
 {
     use Queueable, SerializesModels;
-    public $vote, $mailSubject, $body;
+    private $userInvitation;
+    public $subject;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($vote, $mailSubject,$body)
+    public function __construct()
     {
-        $this->vote = $vote;
-        $this->mailSubject = $mailSubject;
-        $this->body = $body;
     }
 
     /**
@@ -30,9 +28,7 @@ class VotingMail extends Mailable
      */
     public function build()
     {
-        return $this->markdown('emails.vote')
-                    ->to($this->vote)
-                    ->subject($this->mailSubject)
-                    ->with('data',$this->body);
+        return $this->markdown('emails.pengantar')
+                    ->subject('Verfikasi Alamat Email Sistem eVoting');
     }
 }

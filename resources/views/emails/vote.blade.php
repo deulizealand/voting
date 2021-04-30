@@ -5,6 +5,10 @@ Hello, {{ $data['name'] }} ,
 
 Ini adalah email otomatis, mohon jangan di balas.
 
+Pilihan anda adalah :<br>
+Jenis Surat Suara : {{ $data['jenis'] }}<br>
+Yang dipilih : {{ $data['pilahan'] }}<br>
+
 Kunjungi halaman {{ env('APP_URL') }} untuk melihat secara langsung hasil perolehan suara.
 
 Terima kasih.

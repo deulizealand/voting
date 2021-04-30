@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SendJobEmailSuratSuara;
 use App\Mail\VotingMail;
 use App\Models\Member;
 use App\Models\Participant;
@@ -86,7 +87,7 @@ class DashboardController extends Controller
             $voting = new Voting();
             $voting->participant_id = $id;
             $voting->member_id = auth()->user()->member_id;
-            $voting->ip_address = $this->getIp();
+            $voting->ip_address = $request->getClientIp();
             $voting->position_id = $partisipan->position_id;
             $voting->save();
             //dd($member);
@@ -94,15 +95,17 @@ class DashboardController extends Controller
             $member->vote_status = 1;
             $member->save();
 
-            $mailSubject ="Terima Kasih Telah Menggunakan Suara Anda";
-            
+            $posisi = Position::find($partisipan->position_id);
+            $mailSubject ="Surat Suara ". $posisi->name;
             $data = [
                 'user' => auth()->user()->email,
                 'name' => auth()->user()->name,
+                'pilahan' => $partisipan->name,
+                'jenis' => $posisi->name,
             ];
 
             //Send Mail Invitation
-            Mail::to($member->email)->send(new VotingMail($data, $mailSubject));
+            dispatch(new SendJobEmailSuratSuara(auth()->user()->email,$mailSubject,$data));
         }
     }
 
@@ -116,22 +119,27 @@ class DashboardController extends Controller
             $voting->participant_id = $id;
             $voting->member_id = auth()->user()->member_id;
             $voting->position_id = $partisipan->position_id;
-            $voting->ip_address = $this->getIp();
+            $voting->ip_address = $request->getClientIp();
             $voting->save();
 
             $member = Member::find(auth()->user()->member_id);
             $member->vote_pengawas = 1;
             $member->save();
 
-            $mailSubject ="Terima Kasih Telah Menggunakan Suara Anda";
+            $posisi = Position::find($partisipan->position_id);
+
+            $mailSubject ="Surat Suara ". $posisi->name;
             
             $data = [
                 'user' => auth()->user()->email,
                 'name' => auth()->user()->name,
+                'pilahan' => $partisipan->name,
+                'jenis' => $posisi->name,
             ];
 
             //Send Mail Invitation
-            Mail::to($member->email)->send(new VotingMail($data, $mailSubject));
+            dispatch(new SendJobEmailSuratSuara(auth()->user()->email,$mailSubject,$data));
+            //Mail::to($member->email)->send(new VotingMail($data, $mailSubject));
         }
     }
 
@@ -151,7 +159,7 @@ class DashboardController extends Controller
 
     public function refreshPemilih(Request $request)
     {
-        //if($request->ajax()){
+        if($request->ajax()){
             /*$calons = Participant::select(\DB::raw('participants.id,participants.position_id,
                     ifnull((select count(id) as jml from votings where votings.participant_id=participants.id and participants.position_id=votings.position_id group by id),0) as total'))
                     ->join('positions','positions.id','=','participants.position_id')
@@ -178,13 +186,13 @@ class DashboardController extends Controller
                         ->get();
                     
             return response()->json($joinResults);
-        //}
+        }
         
     }
     
     public function refreshPemilihPengawas(Request $request)
     {
-        //if($request->ajax()){
+        if($request->ajax()){
             $calons = Participant::select(\DB::raw('participants.id,participants.position_id'))
                     ->join('positions','positions.id','=','participants.position_id')
                     ->where('participants.position_id',2);
@@ -204,7 +212,7 @@ class DashboardController extends Controller
 
 
             return response()->json($joinResults);
-        //}
+        }
         
     }
 
