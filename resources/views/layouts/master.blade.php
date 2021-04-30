@@ -4,7 +4,9 @@
     </head>
     <body data-theme="default" data-layout="fluid" data-sidebar-position="left" data-sidebar-behavior="sticky">
         <div class="wrapper">
+            @if(auth()->user()->role_id != 3)
             @include('layouts.nav')
+            @endif
             <div class="main">
                 @include('layouts.header')
                 <main class="content">

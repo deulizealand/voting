@@ -16,7 +16,7 @@ Sampai Tanggal : {{ $data['hariEnd'] }}, {{ \Carbon\Carbon::parse($data['tanggal
 Dimulai Pada   : {{ \Carbon\Carbon::parse($data['jamMulai'])->format('H:i:s') }} WIB<br>
 Sampai         : {{ \Carbon\Carbon::parse($data['jamSelesai'])->format('H:i:s') }} WIB<br>
 
-Undangan : <a href="{{ $data['url_invitation'] }}"> Klik Link ini untuk aktifasi</a><br>
+Akses eVoting Melalui : <a href="http://voting.dapenmapamsi.id"> Link ini </a> dengan menggunakan username dan password di atas.<br>
 
 Yakinkan pilihan anda sebelum menekan tombol pilih pada masing-masing kandidat.
 

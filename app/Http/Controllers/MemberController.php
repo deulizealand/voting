@@ -280,6 +280,7 @@ class MemberController extends Controller
                 $invite->username = str_replace(' ','_',Str::substr(strtolower($datas->name),0,10));
                 $invite->role_id = 3;
                 $invite->member_id = $datas->id;
+                $invite->email_verified_at = Carbon::now();
                 $invite->password = $strPassword;
                 $invite->remember_token = $token;
                 $invite->save();

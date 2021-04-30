@@ -107,9 +107,11 @@
     @if(auth()->user()->role_id == 3)
         <div class="col-md-6 col-sm-6 col-xs-12 mb-2">
             <div class="card-header">
-                <div class="card-title">Ketua Umum</div>
+                <div class="card-title text-center"><strong>Ketua Umum</strong></div>
+                <div class="progress" id="ketua">
+                </div>
             </div>
-            <div class="row">
+            <div class="row mt-2">
                 @foreach ($calons as $item)
                     <div class="col-12 col-md-6 col-lg-6">
                         <div class="card">
@@ -147,12 +149,13 @@
 
             </div>
         </div>
-        
         <div class="col-md-6 col-sm-6 col-xs-12 mb-2">
             <div class="card-header">
-                <div class="card-title">Ketua Pengawas</div>
+                <div class="card-title text-center"><strong>Ketua Pengawas</strong></div>
+                <div class="progress" id="pengawas">
+                </div>
             </div>
-            <div class="row">
+            <div class="row mt-2">
                 @foreach ($pengawas as $item)
                     <div class="col-12 col-md-6 col-lg-6">
                         <div class="card">
@@ -189,13 +192,14 @@
                 @endforeach
             </div>
         </div>
-        
     @else
         <div class="col-md-6 col-sm-6 col-xs-12 mb-2">
             <div class="card-header">
-                <div class="card-title">Ketua Umum</div>
+                <div class="card-title text-center"><strong>Ketua Umum</strong></div>
+                <div class="progress" id="ketua">
+                </div>
             </div>
-            <div class="row">
+            <div class="row mt-2">
                 @foreach ($calons as $item)
                     <div class="col-12 col-md-6 col-lg-6">
                         <div class="card">
@@ -221,12 +225,13 @@
                 @endforeach
             </div>
         </div>
-        
         <div class="col-md-6 col-sm-6 col-xs-12 mb-2">
             <div class="card-header">
-                <div class="card-title">Ketua Pengawas</div>
+                <div class="card-title text-center"><strong>Ketua Pengawas</strong></div>
+                <div class="progress" id="pengawas">
+                </div>
             </div>
-            <div class="row">
+            <div class="row mt-2">
                 @foreach ($pengawas as $item)
                     <div class="col-12 col-md-6 col-lg-6">
                         <div class="card">
@@ -252,7 +257,6 @@
                 @endforeach
             </div>
         </div>
-        
     @endif
     </div>
     @include('partials.modals.template')
@@ -264,6 +268,7 @@
     <script type="text/javascript">
         var uri = "{{ url()->current() }}";
         var jamServer = $('#jamSaatIni').text();
+        var html ="";
         //console.log(jamServer);
 
         setInterval(function() {refreshData()}, 1000);
@@ -276,8 +281,14 @@
                 type : 'get',
                 success : function(data) {
                     //table.draw();
+                    $('#ketua').html("");
                     for(var a=0;a<data.length;a++){
                         $('#total-'+data[a].id).text(data[a].total);
+                        html = '<div class="progress-bar '+data[a].background_clr+'" role="progressbar" style="width: '+data[a].suara+'%" aria-valuenow="'+data[a].suara+'" aria-valuemin="0" aria-valuemax="100">'+data[a].suara+'%</div>';
+                        $('#ketua').append(html);
+                        /*$('#ketua-'+data[a].id).html("");
+                        html = '<div class="progress-bar '+data[a].background_clr+'" role="progressbar" style="width: '+data[a].suara+'%" aria-valuenow="'+data[a].suara+'" aria-valuemin="0" aria-valuemax="100">'+data[a].suara+'%</div>';
+                        $('#ketua-'+data[a].id).append(html);*/
                     }
                 }
             });
@@ -291,8 +302,14 @@
                 success : function(data) {
                     //table.draw();
                     //console.log(data);
+                    $('#pengawas').html("");
                     for(var a=0;a<data.length;a++){
                         $('#jumlah-'+data[a].id).text(data[a].total);
+                        html = '<div class="progress-bar '+data[a].background_clr+'" role="progressbar" style="width: '+data[a].suara+'%" aria-valuenow="'+data[a].suara+'" aria-valuemin="0" aria-valuemax="100">'+data[a].suara+'%</div>';
+                        $('#pengawas').append(html);
+                        /*$('#pengawas-'+data[a].id).html("");
+                        html = '<div class="progress-bar '+data[a].background_clr+'" role="progressbar" style="width: '+data[a].suara+'%" aria-valuenow="'+data[a].suara+'" aria-valuemin="0" aria-valuemax="100">'+data[a].suara+'%</div>';
+                        $('#pengawas-'+data[a].id).append(html);*/
                     }
                 }
             });
