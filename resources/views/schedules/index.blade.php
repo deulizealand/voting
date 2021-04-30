@@ -15,7 +15,8 @@
                 <table class="table dt-responsive nowrap my-0 dataJadwal">
                     <thead>
                         <tr>
-                            <th width="60%">Keterangan</th>
+                            <th width="50%">Keterangan</th>
+                            <th width="13%">Tanggal</th>
                             <th width="13%">Waktu</th>
                             <th width="13%">Status</th>
                             <th width="13%">Action</th>
@@ -44,6 +45,7 @@
             },
             columns: [
                 {data: 'gabungan', name: 'gabungan'},
+                {data: 'jamvoting', name: 'jamvoting',className:'text-center'},
                 {data: 'waktuvoting', name: 'waktuvoting',className:'text-center'},
                 {data: 'status', name: 'status',className:'text-center'},
                 {data: 'action', name: 'action',className:'text-center'},

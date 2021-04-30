@@ -25,8 +25,22 @@
             </div>
             <div class="col-md-6">
                 <div class="form-floating">
+                    {{ Form::date('voting_end_date',null, ['id'=>'voting_end_date', 'class'=>'form-control'] ) }}
+                    <label for="voting_end_date">Tanggal Selesai Pemilihan</label>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-1">
+            <div class="col-md-6">
+                <div class="form-floating">
                     {{ Form::time('voting_time',null, ['id'=>'voting_time', 'class'=>'form-control'] ) }}
                     <label for="voting_time">Jam Pemilihan</label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-floating">
+                    {{ Form::time('voting_end',null, ['id'=>'voting_end', 'class'=>'form-control'] ) }}
+                    <label for="voting_end">Jam Selesai Pemilihan</label>
                 </div>
             </div>
         </div>

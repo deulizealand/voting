@@ -193,13 +193,18 @@ class MemberController extends Controller
 
         $hari = Carbon::parse($acara->voting_date);
         $namaHari = $hari->locale('id')->dayName;
+        $endDay = Carbon::parse($acara->voting_end_date);
+        $namaHariTerakhir = $endDay->locale('id')->dayName;
+
         $data = [
             'url_invitation' => $uri_app.'/'.'invitation/'.$token,
             'pass' => $strPassword,
             'user' => $datas->email,
             'acara' => $acara->voting_name,
             'hari' => $namaHari,
+            'hariEnd' => $namaHariTerakhir,
             'tanggal'=> $acara->voting_date,
+            'tanggalSelesai'=> $acara->voting_end_date,
             'jamMulai' => $acara->voting_time,
             'jamSelesai' => $acara->voting_end,
             'username' => str_replace(' ','_',Str::substr(strtolower($datas->name),0,10)), 
@@ -296,6 +301,8 @@ class MemberController extends Controller
 
             $hari = Carbon::parse($acara->voting_date);
             $namaHari = $hari->locale('id')->dayName;
+            $endDay = Carbon::parse($acara->voting_end_date);
+            $namaHariTerakhir = $endDay->locale('id')->dayName;
 
             $data = [
                 'url_invitation' => $uri_app.'/'.'invitation/'.$token,
@@ -303,7 +310,9 @@ class MemberController extends Controller
                 'user' => $value->email,
                 'acara' => $acara->voting_name,
                 'hari' => $namaHari,
+                'hariEnd' => $namaHariTerakhir,
                 'tanggal'=> $acara->voting_date,
+                'tanggalSelesai'=> $acara->voting_end_date,
                 'jamMulai' => $acara->voting_time,
                 'jamSelesai' => $acara->voting_end,
                 'username' => str_replace(' ','_',Str::substr(strtolower($datas->name),0,10)), 

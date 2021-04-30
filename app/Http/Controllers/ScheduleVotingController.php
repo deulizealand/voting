@@ -36,12 +36,21 @@ class ScheduleVotingController extends Controller
                                 </div>
                             </div>';
                 })
-                ->addColumn('waktuvoting',function($data){
+                ->addColumn('jamvoting',function($data){
                     return '<div class="media-left">
                                 <div class="media-body">
                                     <span class="text-semibold">'.Carbon::parse($data->voting_date)->format('d M Y').'</span>
                                 </div>
-                                <div class="text-muted text-size-small"><span class="text-semibold">'.Carbon::parse($data->voting_time)->format('h:i:s A').'</span>
+                                <div class="text-muted text-size-small"><span class="text-semibold">'.Carbon::parse($data->voting_end_date)->format('d M Y').'</span>
+                                </div>
+                            </div>';
+                })
+                ->addColumn('waktuvoting',function($data){
+                    return '<div class="media-left">
+                                <div class="media-body">
+                                    <span class="text-semibold">'.Carbon::parse($data->voting_time)->format('h:i:s A').'</span>
+                                </div>
+                                <div class="text-muted text-size-small"><span class="text-semibold">'.Carbon::parse($data->voting_end)->format('h:i:s A').'</span>
                                 </div>
                             </div>';
                 })
@@ -69,7 +78,7 @@ class ScheduleVotingController extends Controller
                     }
 
                 })
-                ->rawColumns(['gabungan','waktuvoting','status','action'])
+                ->rawColumns(['gabungan','jamvoting','waktuvoting','status','action'])
                 ->make(true);
         }
         return view('schedules.index');
@@ -97,7 +106,9 @@ class ScheduleVotingController extends Controller
             $peserta = new ScheduleVoting();
             $peserta->voting_name = $request->voting_name;
             $peserta->voting_date = $request->voting_date;
+            $peserta->voting_end_date = $request->voting_end_date;
             $peserta->voting_time = $request->voting_time;
+            $peserta->voting_end = $request->voting_end;
             $peserta->user_id = auth()->user()->id;
             $peserta->save();
             
@@ -131,8 +142,9 @@ class ScheduleVotingController extends Controller
             $peserta = ScheduleVoting::find($id);
             $peserta->voting_name = $request->voting_name;
             $peserta->voting_date = $request->voting_date;
+            $peserta->voting_end_date = $request->voting_end_date;
             $peserta->voting_time = $request->voting_time;
-            $peserta->user_id = auth()->user()->id;
+            $peserta->voting_end = $request->voting_end;
             $peserta->save();
         
             return response()->json([

@@ -1,13 +1,9 @@
 @component('mail::message')
 Hello, {{ $data['name'] }} ,
 
-{{ $data['name'] }} terima kasih telah menggunakan hak suara anda.
+{{ $data['name'] }} terima kasih anda telah berpartisipasi dalam pemilihan {{ $data['jenis'] }} Perkumpulan ADPI.
 
 Ini adalah email otomatis, mohon jangan di balas.
-
-Pilihan anda adalah :<br>
-Jenis Surat Suara : {{ $data['jenis'] }}<br>
-Yang dipilih : {{ $data['pilahan'] }}<br>
 
 Kunjungi halaman {{ env('APP_URL') }} untuk melihat secara langsung hasil perolehan suara.
 

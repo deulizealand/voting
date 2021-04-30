@@ -12,6 +12,7 @@ Pasword   : {{ $data['pass'] }}<br>
 eVoting akan diselenggarakan pada :
 
 Hari & Tanggal : {{ $data['hari'] }}, {{ \Carbon\Carbon::parse($data['tanggal'])->format('d M Y') }} <br>
+Sampai Tanggal : {{ $data['hariEnd'] }}, {{ \Carbon\Carbon::parse($data['tanggalSelesai'])->format('d M Y') }} <br>
 Dimulai Pada   : {{ \Carbon\Carbon::parse($data['jamMulai'])->format('H:i:s') }} WIB<br>
 Sampai         : {{ \Carbon\Carbon::parse($data['jamSelesai'])->format('H:i:s') }} WIB<br>
 
