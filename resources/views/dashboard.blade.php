@@ -283,7 +283,7 @@
                     //table.draw();
                     $('#ketua').html("");
                     for(var a=0;a<data.length;a++){
-                        $('#total-'+data[a].id).text(data[a].total);
+                        $('#total-'+data[a].participant_id).text(data[a].total);
                         html = '<div class="progress-bar '+data[a].background_clr+'" role="progressbar" style="width: '+data[a].persen+'%" aria-valuenow="'+data[a].persen+'" aria-valuemin="0" aria-valuemax="100">'+data[a].persen+'%</div>';
                         $('#ketua').append(html);
                         /*$('#ketua-'+data[a].id).html("");
@@ -304,7 +304,7 @@
                     //console.log(data);
                     $('#pengawas').html("");
                     for(var a=0;a<data.length;a++){
-                        $('#jumlah-'+data[a].id).text(data[a].total);
+                        $('#jumlah-'+data[a].participant_id).text(data[a].total);
                         html = '<div class="progress-bar '+data[a].background_clr+'" role="progressbar" style="width: '+data[a].persen+'%" aria-valuenow="'+data[a].persen+'" aria-valuemin="0" aria-valuemax="100">'+data[a].persen+'%</div>';
                         $('#pengawas').append(html);
                         /*$('#pengawas-'+data[a].id).html("");
