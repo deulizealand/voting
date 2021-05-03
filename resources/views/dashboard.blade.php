@@ -284,7 +284,7 @@
                     $('#ketua').html("");
                     for(var a=0;a<data.length;a++){
                         $('#total-'+data[a].id).text(data[a].total);
-                        html = '<div class="progress-bar '+data[a].background_clr+'" role="progressbar" style="width: '+data[a].suara+'%" aria-valuenow="'+data[a].suara+'" aria-valuemin="0" aria-valuemax="100">'+data[a].suara+'%</div>';
+                        html = '<div class="progress-bar '+data[a].background_clr+'" role="progressbar" style="width: '+data[a].persen+'%" aria-valuenow="'+data[a].persen+'" aria-valuemin="0" aria-valuemax="100">'+data[a].persen+'%</div>';
                         $('#ketua').append(html);
                         /*$('#ketua-'+data[a].id).html("");
                         html = '<div class="progress-bar '+data[a].background_clr+'" role="progressbar" style="width: '+data[a].suara+'%" aria-valuenow="'+data[a].suara+'" aria-valuemin="0" aria-valuemax="100">'+data[a].suara+'%</div>';
@@ -305,7 +305,7 @@
                     $('#pengawas').html("");
                     for(var a=0;a<data.length;a++){
                         $('#jumlah-'+data[a].id).text(data[a].total);
-                        html = '<div class="progress-bar '+data[a].background_clr+'" role="progressbar" style="width: '+data[a].suara+'%" aria-valuenow="'+data[a].suara+'" aria-valuemin="0" aria-valuemax="100">'+data[a].suara+'%</div>';
+                        html = '<div class="progress-bar '+data[a].background_clr+'" role="progressbar" style="width: '+data[a].persen+'%" aria-valuenow="'+data[a].persen+'" aria-valuemin="0" aria-valuemax="100">'+data[a].persen+'%</div>';
                         $('#pengawas').append(html);
                         /*$('#pengawas-'+data[a].id).html("");
                         html = '<div class="progress-bar '+data[a].background_clr+'" role="progressbar" style="width: '+data[a].suara+'%" aria-valuenow="'+data[a].suara+'" aria-valuemin="0" aria-valuemax="100">'+data[a].suara+'%</div>';
