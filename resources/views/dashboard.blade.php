@@ -36,7 +36,7 @@
                             <h3 class="mb-2">{{ $jmlPemilih->jml }}</h3>
                             <p class="mb-2">Jumlah Pemilih</p>
                             <div class="mb-0">
-                                <span class="badge badge-soft-success me-2"> <i class="mdi mdi-arrow-bottom-right"></i></span>
+                                <span class="badge badge-soft-success me-2"> <i class="mdi mdi-arrow-bottom-right"></i>100%</span>
                             </div>
                         </div>
                         <div class="d-inline-block ms-3">
@@ -60,7 +60,7 @@
                             </h3>
                             <p class="mb-2">Belum Menyalurkan Pilihan</p>
                             <div class="mb-0">
-                                <span class="badge badge-soft-danger me-2"> <i class="mdi mdi-arrow-bottom-right"></i> </span>
+                                <span class="badge badge-soft-danger me-2"> <i class="mdi mdi-arrow-bottom-right"></i>{{ number_format((($jmlBlumPilih->jml/$jmlPemilih->jml)*100),2) }}%</span>
                             </div>
                         </div>
                         <div class="d-inline-block ms-3">
@@ -84,7 +84,7 @@
                             </h3>
                             <p class="mb-2">Sudah Memilih</p>
                             <div class="mb-0">
-                                <span class="badge badge-soft-success me-2"> <i class="mdi mdi-arrow-bottom-right"></i></span>
+                                <span class="badge badge-soft-info me-2"> <i class="mdi mdi-arrow-bottom-right"></i>{{ number_format((($jmlPilih->jml/$jmlPemilih->jml)*100),2) }}%</span>
                             </div>
                         </div>
                         <div class="d-inline-block ms-3">
